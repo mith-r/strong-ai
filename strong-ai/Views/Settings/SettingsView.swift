@@ -14,28 +14,56 @@ struct SettingsView: View {
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section("API Key") {
-                    SecureField("sk-ant-...", text: binding(\.apiKey))
-                }
-                Section("Goals") {
-                    TextField("e.g. Build muscle, lose fat", text: binding(\.goals), axis: .vertical)
-                        .lineLimit(3...6)
-                }
-                Section("Schedule") {
-                    TextField("e.g. 4 days/week, Mon/Tue/Thu/Fri", text: binding(\.schedule), axis: .vertical)
-                        .lineLimit(2...4)
-                }
-                Section("Equipment") {
-                    TextField("e.g. Full gym, home dumbbells only", text: binding(\.equipment), axis: .vertical)
-                        .lineLimit(2...4)
-                }
-                Section("Injuries / Limitations") {
-                    TextField("e.g. Bad left shoulder, avoid overhead", text: binding(\.injuries), axis: .vertical)
-                        .lineLimit(2...4)
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Settings")
+                    .font(.custom("SpaceGrotesk-Bold", size: 36))
+                    .tracking(-1.4)
+                    .foregroundStyle(Color(hex: 0x0A0A0A))
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
+
+                ScrollView {
+                    VStack(spacing: 24) {
+                        settingsSection("API KEY") {
+                            SecureField("sk-ant-...", text: binding(\.apiKey))
+                        }
+                        settingsSection("GOALS") {
+                            TextField("e.g. Build muscle, lose fat", text: binding(\.goals), axis: .vertical)
+                                .lineLimit(3...6)
+                        }
+                        settingsSection("SCHEDULE") {
+                            TextField("e.g. 4 days/week, Mon/Tue/Thu/Fri", text: binding(\.schedule), axis: .vertical)
+                                .lineLimit(2...4)
+                        }
+                        settingsSection("EQUIPMENT") {
+                            TextField("e.g. Full gym, home dumbbells only", text: binding(\.equipment), axis: .vertical)
+                                .lineLimit(2...4)
+                        }
+                        settingsSection("INJURIES / LIMITATIONS") {
+                            TextField("e.g. Bad left shoulder, avoid overhead", text: binding(\.injuries), axis: .vertical)
+                                .lineLimit(2...4)
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 16)
+                    .padding(.bottom, 100)
                 }
             }
-            .navigationTitle("Settings")
+        }
+    }
+
+    private func settingsSection<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.system(size: 13, weight: .semibold))
+                .tracking(0.5)
+                .foregroundStyle(Color.black.opacity(0.35))
+
+            content()
+                .padding(.vertical, 14)
+                .padding(.horizontal, 16)
+                .background(Color(hex: 0xF5F5F5))
+                .clipShape(RoundedRectangle(cornerRadius: 14))
         }
     }
 

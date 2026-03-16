@@ -9,7 +9,6 @@ struct strong_aiApp: App {
         }
         .modelContainer(for: [
             Exercise.self,
-            WorkoutTemplate.self,
             WorkoutLog.self,
             UserProfile.self,
         ])

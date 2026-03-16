@@ -4,41 +4,51 @@ import SwiftData
 struct ExerciseLibraryView: View {
     @Query(sort: \Exercise.name) private var exercises: [Exercise]
     @Environment(\.modelContext) private var modelContext
-    @State private var showingAdd = false
+    @State private var showingAddExercise = false
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(exercises) { exercise in
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(exercise.name)
-                            .font(.system(size: 15, weight: .semibold))
-                        Text(exercise.muscleGroup.uppercased())
-                            .font(.system(size: 11, weight: .semibold))
-                            .tracking(0.5)
-                            .foregroundStyle(.secondary)
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Library")
+                    .font(.custom("SpaceGrotesk-Bold", size: 36))
+                    .tracking(-1.4)
+                    .foregroundStyle(Color(hex: 0x0A0A0A))
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
+
+                List {
+                    ForEach(exercises) { exercise in
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(exercise.name)
+                                .font(.system(size: 15, weight: .semibold))
+                            Text(exercise.muscleGroup.uppercased())
+                                .font(.system(size: 11, weight: .semibold))
+                                .tracking(0.5)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.vertical, 2)
                     }
-                    .padding(.vertical, 2)
+                    .onDelete { offsets in
+                        for index in offsets {
+                            modelContext.delete(exercises[index])
+                        }
+                    }
                 }
-                .onDelete { offsets in
-                    for index in offsets {
-                        modelContext.delete(exercises[index])
+                .overlay {
+                    if exercises.isEmpty {
+                        ContentUnavailableView("No Exercises", systemImage: "dumbbell.fill", description: Text("Add exercises to build your library."))
                     }
                 }
             }
-            .navigationTitle("Exercise Library")
             .toolbar {
-                Button { showingAdd = true } label: {
+                Button {
+                    showingAddExercise = true
+                } label: {
                     Image(systemName: "plus")
                 }
             }
-            .sheet(isPresented: $showingAdd) {
+            .sheet(isPresented: $showingAddExercise) {
                 AddExerciseSheet()
-            }
-            .overlay {
-                if exercises.isEmpty {
-                    ContentUnavailableView("No Exercises", systemImage: "dumbbell.fill", description: Text("Add exercises to build your library."))
-                }
             }
         }
     }

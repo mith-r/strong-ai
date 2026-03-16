@@ -70,8 +70,8 @@ iOS-only AI-native gym app. The AI is the coach — it programs your training, a
 ### 6. AI Workout Editing
 - Text input field for natural language requests during or before a workout
 - Examples: "shorten this to an hour", "add more chest volume", "make this a deload week"
-- AI response shown as a diff in a slide-up modal
-- User approves (checkmark) or dismisses
+- AI changes apply automatically — no manual approval step
+- AI explains what it changed in the chat drawer
 - Uses Claude API with user's own API key (BYOK)
 
 ### 7. Post-Workout Debrief

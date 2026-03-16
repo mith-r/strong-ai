@@ -1,9 +1,17 @@
 import SwiftUI
 
+@Observable
+final class AppState {
+    var isChatDrawerOpen = false
+}
+
 struct ContentView: View {
+    @State private var appState = AppState()
+
     var body: some View {
         TabView {
             HomeView()
+                .toolbar(appState.isChatDrawerOpen ? .hidden : .visible, for: .tabBar)
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }
@@ -21,5 +29,6 @@ struct ContentView: View {
                 }
         }
         .tint(.black)
+        .environment(appState)
     }
 }

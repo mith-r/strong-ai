@@ -6,6 +6,7 @@ struct LogSet: Codable, Hashable {
     var weight: Double
     var isWarmup: Bool = false
     var isFailure: Bool = false
+    var rpe: Int?
     var completedAt: Date?
 }
 
@@ -17,7 +18,7 @@ struct LogEntry: Codable, Hashable {
 
 @Model
 final class WorkoutLog {
-    var templateName: String
+    var workoutName: String
     var startedAt: Date
     var finishedAt: Date?
     var entriesData: Data
@@ -39,8 +40,8 @@ final class WorkoutLog {
     }
     var isInProgress: Bool { finishedAt == nil }
 
-    init(templateName: String, entries: [LogEntry] = [], startedAt: Date = .now) {
-        self.templateName = templateName
+    init(workoutName: String, entries: [LogEntry] = [], startedAt: Date = .now) {
+        self.workoutName = workoutName
         self.startedAt = startedAt
         self.entriesData = (try? JSONEncoder().encode(entries)) ?? Data()
     }

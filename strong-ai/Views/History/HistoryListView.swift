@@ -29,6 +29,13 @@ struct HistoryListView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
+                    Text("History")
+                        .font(.custom("SpaceGrotesk-Bold", size: 36))
+                        .tracking(-1.4)
+                        .foregroundStyle(Color(hex: 0x0A0A0A))
+                        .padding(.horizontal, 20)
+                        .padding(.top, 8)
+
                     statsRow
                     logSection("THIS WEEK", logs: thisWeekLogs)
                     logSection("LAST WEEK", logs: lastWeekLogs)
@@ -36,7 +43,6 @@ struct HistoryListView: View {
                 }
                 .padding(.bottom, 20)
             }
-            .navigationTitle("History")
             .overlay {
                 if completedLogs.isEmpty {
                     ContentUnavailableView("No Workouts Yet", systemImage: "figure.strengthtraining.traditional", description: Text("Completed workouts will appear here."))
@@ -100,6 +106,7 @@ struct HistoryListView: View {
     }
 
     private func logRow(_ log: WorkoutLog) -> some View {
+        NavigationLink(destination: WorkoutDetailView(log: log)) {
         HStack(spacing: 16) {
             // Date column
             VStack(spacing: 0) {
@@ -115,7 +122,7 @@ struct HistoryListView: View {
 
             // Info
             VStack(alignment: .leading, spacing: 2) {
-                Text(log.templateName)
+                Text(log.workoutName)
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(Color(hex: 0x0A0A0A))
                 if log.isInProgress {
@@ -137,5 +144,7 @@ struct HistoryListView: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
+        }
+        .buttonStyle(.plain)
     }
 }
