@@ -368,8 +368,9 @@ struct HomeView: View {
 
             HStack(spacing: 12) {
                 if isChatInputActive {
-                    TextField("I only have 30 min today...", text: $chatInputText)
+                    TextField("I only have 30 min today...", text: $chatInputText, axis: .vertical)
                         .font(.system(size: 15))
+                        .lineLimit(1...5)
                         .focused($isChatBarFocused)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 11)

@@ -24,6 +24,12 @@ struct ChatDrawerView: View {
     @State private var isSending = false
     @FocusState private var isInputFocused: Bool
 
+    private var safeAreaBottom: CGFloat {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows.first?.safeAreaInsets.bottom ?? 0
+    }
+
     var body: some View {
         ZStack(alignment: .bottom) {
             // Dimmed background
@@ -106,8 +112,9 @@ struct ChatDrawerView: View {
 
                 // Input
                 HStack(spacing: 12) {
-                    TextField("Ask anything...", text: $inputText)
+                    TextField("Ask anything...", text: $inputText, axis: .vertical)
                         .font(.system(size: 15))
+                        .lineLimit(1...5)
                         .focused($isInputFocused)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 11)
@@ -132,8 +139,13 @@ struct ChatDrawerView: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 12)
             }
-            .background(Color.white)
-            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 16, topTrailingRadius: 16))
+            .padding(.bottom, safeAreaBottom)
+            .frame(maxHeight: UIScreen.main.bounds.height * 0.8)
+            .background {
+                Color.white
+                    .clipShape(UnevenRoundedRectangle(topLeadingRadius: 16, topTrailingRadius: 16))
+                    .ignoresSafeArea(.container, edges: .bottom)
+            }
             .task {
                 if let message = pendingMessage {
                     pendingMessage = nil

@@ -217,8 +217,9 @@ struct ActiveWorkoutView: View {
             if !apiKey.isEmpty {
                 HStack(spacing: 10) {
                     if isChatInputActive {
-                        TextField("Add more tricep work...", text: $chatInputText)
+                        TextField("Add more tricep work...", text: $chatInputText, axis: .vertical)
                             .font(.system(size: 14))
+                            .lineLimit(1...5)
                             .focused($isChatBarFocused)
                             .padding(.horizontal, 14)
                             .padding(.vertical, 9)
