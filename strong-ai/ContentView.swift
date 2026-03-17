@@ -24,10 +24,6 @@ struct ContentView: View {
                 .tabItem {
                     Label("History", systemImage: "clock.fill")
                 }
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gearshape.fill")
-                }
         }
         .tint(.black)
         .environment(appState)

@@ -174,10 +174,20 @@ struct HomeView: View {
                 .font(.system(size: 13, weight: .medium))
                 .tracking(0.8)
                 .foregroundStyle(Color.black.opacity(0.35))
-            Text(greeting)
-                .font(.custom("SpaceGrotesk-Bold", size: 36))
-                .tracking(-1.4)
-                .foregroundStyle(Color(hex: 0x0A0A0A))
+            HStack(alignment: .center) {
+                Text(greeting)
+                    .font(.custom("SpaceGrotesk-Bold", size: 36))
+                    .tracking(-1.4)
+                    .foregroundStyle(Color(hex: 0x0A0A0A))
+                Spacer()
+                NavigationLink {
+                    SettingsView()
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 20))
+                        .foregroundStyle(Color(hex: 0x0A0A0A))
+                }
+            }
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
