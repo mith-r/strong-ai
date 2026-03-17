@@ -406,6 +406,7 @@ final class ActiveWorkoutViewModel {
     }
 
     func isActiveSet(exerciseIndex: Int, setIndex: Int) -> Bool {
+        if timerService.isRunning { return false }
         for (ei, entry) in entries.enumerated() {
             for (si, set) in entry.sets.enumerated() {
                 if set.completedAt == nil {
