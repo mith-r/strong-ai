@@ -8,6 +8,7 @@ private let logger = Logger(subsystem: "com.strong-ai", category: "TimerService"
 @Observable
 final class TimerService {
     var remainingSeconds: Int = 0
+    var totalSeconds: Int = 0
     var isRunning: Bool = false
 
     private var timer: Timer?
@@ -20,6 +21,7 @@ final class TimerService {
             return
         }
         remainingSeconds = seconds
+        totalSeconds = seconds
         isRunning = true
         fireDate = Date().addingTimeInterval(TimeInterval(seconds))
 
@@ -43,6 +45,7 @@ final class TimerService {
         timer = nil
         isRunning = false
         remainingSeconds = 0
+        totalSeconds = 0
         fireDate = nil
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["rest-timer"])
     }
@@ -73,8 +76,16 @@ final class TimerService {
     }
 
     var formattedTime: String {
-        let m = remainingSeconds / 60
-        let s = remainingSeconds % 60
+        formatSeconds(remainingSeconds)
+    }
+
+    var formattedTotal: String {
+        formatSeconds(totalSeconds)
+    }
+
+    private func formatSeconds(_ seconds: Int) -> String {
+        let m = seconds / 60
+        let s = seconds % 60
         return String(format: "%d:%02d", m, s)
     }
 }
