@@ -261,6 +261,7 @@
 				DEVELOPMENT_TEAM = 4YWNLRMN7J;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Info.plist";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Strong AI uses your health data (sleep, heart rate, HRV) to personalize your workout programming.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -299,6 +300,7 @@
 				DEVELOPMENT_TEAM = 4YWNLRMN7J;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Info.plist";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Strong AI uses your health data (sleep, heart rate, HRV) to personalize your workout programming.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
