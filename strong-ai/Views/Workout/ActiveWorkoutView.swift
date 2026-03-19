@@ -23,6 +23,7 @@ struct ActiveWorkoutView: View {
     @State private var showingFinishAlert = false
     @State private var showingDebrief = false
     @State private var finishedLog: WorkoutLog?
+    @State private var selectedExercise: Exercise?
     @State private var debriefRecentLogs: [WorkoutLogSnapshot] = []
     @Environment(AppState.self) private var appState
 
@@ -96,6 +97,16 @@ struct ActiveWorkoutView: View {
         } message: {
             Text("Save your workout with \(viewModel.completedSets) sets completed?")
         }
+        .sheet(item: $selectedExercise) { exercise in
+            NavigationStack {
+                ExerciseDetailView(exercise: exercise)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Done") { selectedExercise = nil }
+                        }
+                    }
+            }
+        }
         .sheet(isPresented: $showingDebrief, onDismiss: {
             finishedLog = nil
             debriefRecentLogs = []
@@ -157,17 +168,22 @@ struct ActiveWorkoutView: View {
 
     private func exerciseSection(exerciseIndex: Int, entry: LogEntry) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Text(entry.exerciseName)
-                    .font(.custom("SpaceGrotesk-Bold", size: 18))
-                    .tracking(-0.18)
-                    .foregroundStyle(Color(hex: 0x0A0A0A))
-                Spacer()
-                Text(entry.muscleGroup.uppercased())
-                    .font(.system(size: 12, weight: .medium))
-                    .tracking(0.72)
-                    .foregroundStyle(Color.black.opacity(0.3))
+            Button {
+                selectedExercise = exercises.first { $0.name == entry.exerciseName }
+            } label: {
+                HStack {
+                    Text(entry.exerciseName)
+                        .font(.custom("SpaceGrotesk-Bold", size: 18))
+                        .tracking(-0.18)
+                        .foregroundStyle(Color(hex: 0x0A0A0A))
+                    Spacer()
+                    Text(entry.muscleGroup.uppercased())
+                        .font(.system(size: 12, weight: .medium))
+                        .tracking(0.72)
+                        .foregroundStyle(Color.black.opacity(0.3))
+                }
             }
+            .buttonStyle(.plain)
             .padding(.horizontal, 20)
             .padding(.top, 20)
             .padding(.bottom, 10)
