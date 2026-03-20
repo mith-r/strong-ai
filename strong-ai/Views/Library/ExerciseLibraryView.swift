@@ -64,8 +64,8 @@ struct ExerciseLibraryView: View {
                                 NavigationLink(value: exercise) {
                                     exerciseRow(exercise)
                                 }
-                                    .listRowSeparator(.hidden)
-                                    .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                                .listRowSeparator(.hidden)
+                                .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
                             }
                             .onDelete { offsets in
                                 for index in offsets {
@@ -80,15 +80,19 @@ struct ExerciseLibraryView: View {
                 .listStyle(.plain)
                 .overlay {
                     if exercises.isEmpty {
-                        ContentUnavailableView("No Exercises", systemImage: "dumbbell.fill", description: Text("Add exercises to build your library."))
+                        ContentUnavailableView(
+                            "No Exercises",
+                            systemImage: "dumbbell.fill",
+                            description: Text("Add exercises to build your library.")
+                        )
                     }
                 }
-                .navigationDestination(for: Exercise.self) { exercise in
-                    ExerciseDetailView(exercise: exercise)
-                }
-                .sheet(isPresented: $showingAddExercise) {
-                    AddExerciseSheet()
-                }
+            }
+            .navigationDestination(for: Exercise.self) { exercise in
+                ExerciseDetailView(exercise: exercise)
+            }
+            .sheet(isPresented: $showingAddExercise) {
+                AddExerciseSheet()
             }
         }
     }
@@ -129,7 +133,6 @@ struct ExerciseLibraryView: View {
                             .clipShape(Circle())
                     }
                 }
-
             }
             .padding(.top, 20)
             .padding(.horizontal, 20)
@@ -173,11 +176,13 @@ struct ExerciseLibraryView: View {
                         .foregroundStyle(Color(hex: 0x1A1A1A))
 
                     if let stats, stats.timesPerformed > 0 {
-                        Text(stats.bestWeight > 0
-                             ? "\(stats.timesPerformed) times · Best: \(Int(stats.bestWeight)) lbs"
-                             : "\(stats.timesPerformed) times")
-                            .font(.system(size: 12))
-                            .foregroundStyle(Color(hex: 0x999999))
+                        Text(
+                            stats.bestWeight > 0
+                                ? "\(stats.timesPerformed) times · Best: \(Int(stats.bestWeight)) lbs"
+                                : "\(stats.timesPerformed) times"
+                        )
+                        .font(.system(size: 12))
+                        .foregroundStyle(Color(hex: 0x999999))
                     }
                 }
 
@@ -227,13 +232,15 @@ private struct AddExerciseSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        let trimmedName = name.trimmingCharacters(in: .whitespaces)
-                        let trimmedGroup = muscleGroup.trimmingCharacters(in: .whitespaces)
-                        let exercise = Exercise(name: trimmedName, muscleGroup: trimmedGroup)
-                        modelContext.insert(exercise)
+                        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let trimmedGroup = muscleGroup.trimmingCharacters(in: .whitespacesAndNewlines)
+                        modelContext.insert(Exercise(name: trimmedName, muscleGroup: trimmedGroup))
                         dismiss()
                     }
-                    .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty || muscleGroup.trimmingCharacters(in: .whitespaces).isEmpty)
+                    .disabled(
+                        name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                        muscleGroup.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    )
                 }
             }
         }
