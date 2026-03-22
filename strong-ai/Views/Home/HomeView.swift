@@ -21,8 +21,8 @@ struct HomeView: View {
     @State private var errorMessage: String?
     @State private var healthContext: HealthContext?
     @State private var exercisesExpanded = false
+    @State private var apiKey = ""
     private var profile: UserProfile? { profiles.first }
-    private var apiKey: String { profile?.apiKey ?? "" }
 
     var body: some View {
         @Bindable var state = appState
@@ -56,8 +56,14 @@ struct HomeView: View {
                     // No extra collapsed content
                 }
             }
-            .task {
-                await generateWorkoutIfNeeded()
+            .onAppear {
+                syncAPIKeyFromProfile()
+                Task {
+                    await generateWorkoutIfNeeded()
+                }
+            }
+            .onChange(of: profiles.count) { _, _ in
+                syncAPIKeyFromProfile()
             }
         }
     }
@@ -167,6 +173,10 @@ struct HomeView: View {
             existingExercises: exercises,
             modelContext: modelContext
         )
+    }
+
+    private func syncAPIKeyFromProfile() {
+        apiKey = UserProfileService.loadAPIKey()
     }
 
     // MARK: - Header

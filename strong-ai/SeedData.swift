@@ -50,7 +50,6 @@ enum SeedData {
         // MARK: - User Profile
 
         let profile = UserProfile(
-            apiKey: "",
             goals: "Build muscle, improve strength",
             schedule: "4 days per week, 60 minute sessions",
             equipment: "Full gym — barbell, dumbbells, cables, pull-up bar",

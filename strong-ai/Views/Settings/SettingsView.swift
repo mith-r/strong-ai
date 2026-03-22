@@ -4,6 +4,8 @@ import SwiftData
 struct SettingsView: View {
     @Query private var profiles: [UserProfile]
     @Environment(\.modelContext) private var modelContext
+    @State private var apiKey = ""
+    @State private var apiKeyError: String?
 
     private var profile: UserProfile? { profiles.first }
 
@@ -20,7 +22,18 @@ struct SettingsView: View {
                 ScrollView {
                     VStack(spacing: 24) {
                         settingsSection("API KEY") {
-                            SecureField("sk-ant-...", text: binding(\.apiKey))
+                            VStack(alignment: .leading, spacing: 8) {
+                                SecureField("sk-ant-...", text: apiKeyBinding)
+                                    .textInputAutocapitalization(.never)
+                                    .autocorrectionDisabled()
+                                    .privacySensitive()
+
+                                if let apiKeyError {
+                                    Text(apiKeyError)
+                                        .font(.system(size: 12))
+                                        .foregroundStyle(.red)
+                                }
+                            }
                         }
                         settingsSection("GOALS") {
                             TextField("e.g. Build muscle, lose fat", text: binding(\.goals), axis: .vertical)
@@ -45,9 +58,10 @@ struct SettingsView: View {
                 }
             }
             .onAppear {
-                if profiles.isEmpty {
-                    modelContext.insert(UserProfile())
-                }
+                syncProfileState()
+            }
+            .onChange(of: profiles.count) { _, _ in
+                syncProfileState()
             }
         }
     }
@@ -72,5 +86,33 @@ struct SettingsView: View {
             get: { profile?[keyPath: keyPath] ?? "" },
             set: { profile?[keyPath: keyPath] = $0 }
         )
+    }
+
+    private var apiKeyBinding: Binding<String> {
+        Binding(
+            get: { apiKey },
+            set: { newValue in
+                apiKey = newValue
+                persistAPIKey(newValue)
+            }
+        )
+    }
+
+    private func syncProfileState() {
+        if profiles.isEmpty {
+            UserProfileService.ensureProfile(existingProfile: profile, modelContext: modelContext)
+        }
+
+        apiKey = UserProfileService.loadAPIKey()
+        apiKeyError = nil
+    }
+
+    private func persistAPIKey(_ newValue: String) {
+        do {
+            try UserProfileService.saveAPIKey(newValue, for: profile, modelContext: modelContext)
+            apiKeyError = nil
+        } catch {
+            apiKeyError = error.localizedDescription
+        }
     }
 }

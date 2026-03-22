@@ -10,12 +10,8 @@ struct strong_aiApp: App {
         self.container = container
 
         #if DEBUG
-        let existingKey = (try? container.mainContext.fetch(FetchDescriptor<UserProfile>()))?.first?.apiKey ?? ""
         SeedData.clearAll(container.mainContext)
         SeedData.populate(container.mainContext)
-        if let profile = try? container.mainContext.fetch(FetchDescriptor<UserProfile>()).first {
-            profile.apiKey = existingKey
-        }
         #endif
     }
 
