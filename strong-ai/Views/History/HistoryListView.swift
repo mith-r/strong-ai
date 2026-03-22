@@ -26,27 +26,25 @@ struct HistoryListView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("History")
-                        .font(.custom("SpaceGrotesk-Bold", size: 36))
-                        .tracking(-1.4)
-                        .foregroundStyle(Color(hex: 0x0A0A0A))
-                        .padding(.horizontal, 20)
-                        .padding(.top, 8)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                Text("History")
+                    .font(.custom("SpaceGrotesk-Bold", size: 36))
+                    .tracking(-1.4)
+                    .foregroundStyle(Color(hex: 0x0A0A0A))
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
 
-                    statsRow
-                    logSection("THIS WEEK", logs: thisWeekLogs)
-                    logSection("LAST WEEK", logs: lastWeekLogs)
-                    logSection("EARLIER", logs: olderLogs)
-                }
-                .padding(.bottom, 20)
+                statsRow
+                logSection("THIS WEEK", logs: thisWeekLogs)
+                logSection("LAST WEEK", logs: lastWeekLogs)
+                logSection("EARLIER", logs: olderLogs)
             }
-            .overlay {
-                if completedLogs.isEmpty {
-                    ContentUnavailableView("No Workouts Yet", systemImage: "figure.strengthtraining.traditional", description: Text("Completed workouts will appear here."))
-                }
+            .padding(.bottom, 100)
+        }
+        .overlay {
+            if completedLogs.isEmpty {
+                ContentUnavailableView("No Workouts Yet", systemImage: "figure.strengthtraining.traditional", description: Text("Completed workouts will appear here."))
             }
         }
     }

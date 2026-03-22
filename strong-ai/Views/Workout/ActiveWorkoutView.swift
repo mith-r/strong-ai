@@ -51,18 +51,16 @@ struct ActiveWorkoutView: View {
         .overlay {
             if !apiKey.isEmpty {
                 ChatDrawerView(
-                    isExpanded: $state.isChatDrawerOpen,
+                    selectedDetent: $state.chatDetent,
                     pendingMessage: $state.pendingMessage,
                     placeholder: "Add more tricep work...",
                     workoutName: viewModel.workoutName,
                     elapsedTime: viewModel.elapsedFormatted,
                     exerciseProgress: "\(viewModel.completedSets) of \(viewModel.totalSets) sets",
-                    collapsedHeight: 140,
                     onSend: { message in
                         await streamMidWorkoutChat(message)
                     }
-                ) {
-                }
+                )
             }
         }
         .navigationBarTitleDisplayMode(.inline)

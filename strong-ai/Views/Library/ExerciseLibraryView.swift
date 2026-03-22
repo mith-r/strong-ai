@@ -53,47 +53,46 @@ struct ExerciseLibraryView: View {
     // MARK: - Body
 
     var body: some View {
-        NavigationStack {
-            VStack(alignment: .leading, spacing: 0) {
-                headerSection
+        VStack(alignment: .leading, spacing: 0) {
+            headerSection
 
-                List {
-                    ForEach(groupedExercises, id: \.0) { group, groupExercises in
-                        Section {
-                            ForEach(groupExercises) { exercise in
-                                NavigationLink(value: exercise) {
-                                    exerciseRow(exercise)
-                                }
-                                .listRowSeparator(.hidden)
-                                .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+            List {
+                ForEach(groupedExercises, id: \.0) { group, groupExercises in
+                    Section {
+                        ForEach(groupExercises) { exercise in
+                            NavigationLink(value: exercise) {
+                                exerciseRow(exercise)
                             }
-                            .onDelete { offsets in
-                                for index in offsets {
-                                    modelContext.delete(groupExercises[index])
-                                }
-                            }
-                        } header: {
-                            sectionHeader(group)
+                            .listRowSeparator(.hidden)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
                         }
-                    }
-                }
-                .listStyle(.plain)
-                .overlay {
-                    if exercises.isEmpty {
-                        ContentUnavailableView(
-                            "No Exercises",
-                            systemImage: "dumbbell.fill",
-                            description: Text("Add exercises to build your library.")
-                        )
+                        .onDelete { offsets in
+                            for index in offsets {
+                                modelContext.delete(groupExercises[index])
+                            }
+                        }
+                    } header: {
+                        sectionHeader(group)
                     }
                 }
             }
-            .navigationDestination(for: Exercise.self) { exercise in
-                ExerciseDetailView(exercise: exercise)
+            .listStyle(.plain)
+            .contentMargins(.bottom, 100)
+            .overlay {
+                if exercises.isEmpty {
+                    ContentUnavailableView(
+                        "No Exercises",
+                        systemImage: "dumbbell.fill",
+                        description: Text("Add exercises to build your library.")
+                    )
+                }
             }
-            .sheet(isPresented: $showingAddExercise) {
-                AddExerciseSheet()
-            }
+        }
+        .navigationDestination(for: Exercise.self) { exercise in
+            ExerciseDetailView(exercise: exercise)
+        }
+        .sheet(isPresented: $showingAddExercise) {
+            AddExerciseSheet()
         }
     }
 
