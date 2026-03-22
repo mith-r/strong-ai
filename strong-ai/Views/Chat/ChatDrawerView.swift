@@ -165,6 +165,7 @@ struct ChatDrawerView<CollapsedExtra: View>: View {
                         }
                     }
                 }
+                .scrollDismissesKeyboard(.interactively)
             }
 
             Divider()

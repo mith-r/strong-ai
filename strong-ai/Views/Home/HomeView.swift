@@ -44,6 +44,7 @@ struct HomeView: View {
                 }
                 .padding(.bottom, 100)
             }
+            .scrollDismissesKeyboard(.interactively)
             .overlay {
                 ChatDrawerView(
                     isExpanded: $state.isChatDrawerOpen,

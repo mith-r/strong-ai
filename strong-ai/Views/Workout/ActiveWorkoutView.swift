@@ -48,6 +48,7 @@ struct ActiveWorkoutView: View {
             }
             .padding(.bottom, 120)
         }
+        .scrollDismissesKeyboard(.interactively)
         .overlay {
             if !apiKey.isEmpty {
                 ChatDrawerView(
